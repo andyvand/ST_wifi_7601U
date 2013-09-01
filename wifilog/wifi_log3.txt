@@ -1,0 +1,64 @@
+root@NewlandSTB:/# ifconfig -a
+eth0      Link encap:Ethernet  HWaddr 00:FA:E0:FA:E0:07  
+          inet addr:172.16.13.113  Bcast:172.16.13.255  Mask:255.255.255.0
+          inet6 addr: fe80::2fa:e0ff:fefa:e007/64 Scope:Link
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:8654 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:7676 errors:3 dropped:0 overruns:0 carrier:3
+          collisions:0 txqueuelen:1000 
+          RX bytes:9478347 (9.0 MiB)  TX bytes:1026618 (1002.5 KiB)
+          Interrupt:197 Base address:0x8000 
+ 
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          inet6 addr: ::1/128 Scope:Host
+          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+          RX packets:2 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:2 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:176 (176.0 b)  TX bytes:176 (176.0 b)
+ 
+sit0      Link encap:IPv6-in-IPv4  
+          NOARP  MTU:1480  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+ 
+wlan0     Link encap:Ethernet  HWaddr 00:00:00:00:00:00  
+          BROADCAST MULTICAST  MTU:1500  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 b)  TX bytes:0 (0.0 b)
+ 
+root@NewlandSTB:/# iwlist 
+Usage: iwlist [interface] scanning [essid NNN] [last]
+              [interface] frequency 
+              [interface] channel 
+              [interface] bitrate 
+              [interface] rate 
+              [interface] encryption 
+              [interface] keys 
+              [interface] power 
+              [interface] txpower 
+              [interface] retry 
+              [interface] ap 
+              [interface] accesspoints 
+              [interface] peers 
+              [interface] event 
+              [interface] auth 
+              [interface] wpakeys 
+              [interface] genie 
+              [interface] modulation 
+root@NewlandSTB:/# iwlist sit0 scan
+sit0      Interface doesn't support scanning.
+ 
+root@NewlandSTB:/# iwlist wlan scan
+wlan      Interface doesn't support scanning.
+ 
+root@NewlandSTB:/# iwlist wlan0 scan
+===>rt_ioctl_giwrange
+INFO::Network is down!
+wlan0     Interface doesn't support scanning : Network is down
+ 

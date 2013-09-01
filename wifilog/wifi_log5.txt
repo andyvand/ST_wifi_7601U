@@ -1,0 +1,20 @@
+ifconfig wlan0 up
+
+ifconfig wlan0 down
+
+iwlist wlan0 scan
+
+ifconfig wlan0 192.168.0.111
+
+ifconfig wlan0 
+
+
+root@NewlandSTB:/# insmod mt7601Usta.ko 
+rtusb init rt2870 --->
+usbcore: registered new interface driver rt2870
+
+
+RTUSB_VendorRequest failed(-110),TxFlags=0x0, ReqType=IN, Req=0x7, Idx=0x500,pAd->Flags=0x30004442
+#
+#
+

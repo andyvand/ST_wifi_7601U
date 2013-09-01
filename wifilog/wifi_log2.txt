@@ -1,0 +1,65 @@
+root@NewlandSTB:/# insmod mt7601Usta.ko 
+rtusb init rt2870 --->
+===>rt2870_probe()!
+--> RTMPAllocAdapterBlock
+ 
+ 
+=== pAd = c1361000, size = 857316 ===
+ 
+--> RTMPAllocTxRxRingMemory
+<-- RTMPAllocTxRxRingMemory, Status=0
+<-- RTMPAllocAdapterBlock, Status=0
+NumEndpoints=8
+BULK IN MaxPacketSize = 512
+EP address = 0x84
+BULK IN MaxPacketSize = 512
+EP address = 0x85
+BULK OUT MaxPacketSize = 512
+EP address = 0x 8  
+BULK OUT MaxPacketSize = 512
+EP address = 0x 4  
+BULK OUT MaxPacketSize = 512
+EP address = 0x 5  
+BULK OUT MaxPacketSize = 512
+EP address = 0x 6  
+BULK OUT MaxPacketSize = 512
+EP address = 0x 7  
+BULK OUT MaxPacketSize = 512
+EP address = 0x 9  
+RTMP_COM_IoctlHandle():pAd->BulkOutEpAddr=0x8
+RTMP_COM_IoctlHandle():pAd->BulkOutEpAddr=0x4
+RTMP_COM_IoctlHandle():pAd->BulkOutEpAddr=0x5
+RTMP_COM_IoctlHandle():pAd->BulkOutEpAddr=0x6
+RTMP_COM_IoctlHandle():pAd->BulkOutEpAddr=0x7
+RTMP_COM_IoctlHandle():pAd->BulkOutEpAddr=0x9
+STA Driver version-3.0.0.1_android_ics_20130128
+-->MT7601_Init():
+Chip specific bbpRegTbSize=0!
+Chip VCO calibration mode = 3!
+NVM is EFUSE
+Efuse Size=0x1d [Range:1e0-1fc] 
+Endpoint(8) is for In-band Command
+Endpoint(4) is for WMM0 AC0
+Endpoint(5) is for WMM0 AC1
+Endpoint(6) is for WMM0 AC2
+Endpoint(7) is for WMM0 AC3
+Endpoint(9) is for WMM1 AC0
+Endpoint(84) is for Data-In
+Endpoint(85) is for Command Rsp
+Allocate a net device with private data size=0!
+Allocate net device ops success!
+The name of the new wlan interface is wlan0...
+80211> RFICType = 3
+NumOfChan ===> 58
+80211> Number of channel = 44
+80211> Number of rate = 12
+80211> CurTxPower = 0 dBm
+80211> TxStream = 0
+crda> requlation requestion by core: 00
+==========> TYPE Reset CFG80211 Global Setting Here
+80211> CFG80211_Register
+RtmpOSNetDevAttach()--->
+80211> CFG80211_OpsPwrMgmt ==>
+<---RtmpOSNetDevAttach(), ret=0
+<===rt2870_probe()!
+usbcore: registered new interface driver rt2870

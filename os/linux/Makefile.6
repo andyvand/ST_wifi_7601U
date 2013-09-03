@@ -1045,6 +1045,7 @@ install:print_env
 	@echo ">>>>>>>>." $(LINUX_SRC_MODULE)
 	@echo "MOD_NAME = "  $(MOD_NAME)
 	@echo "OSABL = "$(OSABL)
+	@echo "EXTRA_CFLAGS = "$(EXTRA_CFLAGS)
 	install -d $(LINUX_SRC_MODULE)
 	install -m 644 -c $(addsuffix .ko,$(MOD_NAME)) $(LINUX_SRC_MODULE)
 	/sbin/depmod -a ${shell uname -r}

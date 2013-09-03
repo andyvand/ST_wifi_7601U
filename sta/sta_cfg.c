@@ -6545,6 +6545,31 @@ next:
 }
 #endif /* RLT_RF */
 
+#else/*housir: else DBG */
+VOID RTMPIoctlMAC(
+	IN RTMP_ADAPTER *pAd,
+	IN RTMP_IOCTL_INPUT_STRUCT *wrq)
+{
+}
+
+VOID RTMPIoctlE2PROM(
+	IN	PRTMP_ADAPTER	pAd, 
+	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq)
+{
+}
+
+
+#ifdef RLT_RF
+VOID RTMPIoctlRF(
+	IN	PRTMP_ADAPTER	pAdapter,
+	IN	RTMP_IOCTL_INPUT_STRUCT	*wrq)
+{
+//    (void )pAdapter;
+//    (void )wrq;
+}
+#endif/* RLT_RF */
+
+
 
 #endif /* DBG */
 

@@ -400,7 +400,8 @@ endif #// endif of RT2860_MODE == AP //
 # config for STA mode
 
 ifeq ($(RT28xx_MODE),STA)
-WFLAGS += -DCONFIG_STA_SUPPORT -DSCAN_SUPPORT -DDBG
+WFLAGS += -DCONFIG_STA_SUPPORT -DSCAN_SUPPORT \
+-DDBG
 
 ifeq ($(HAS_XLINK),y)
 WFLAGS += -DXLINK_SUPPORT
@@ -862,7 +863,6 @@ EXTRA_CFLAGS += \
 -Wall -fno-strict-aliasing -std=gnu99   -fgnu89-inline\
 -Wstrict-prototypes -Wno-trigraphs -O2 -fno-strict-aliasing -fno-common -Uarm  -pipe \
 -I/opt/STM/STLinux-2.4/devkit/sources/kernel/linux-2.6.32/drivers/staging/rt2870 \
--DRLT_RF \
 $(WFLAGS)
 export EXTRA_CFLAGS
 endif

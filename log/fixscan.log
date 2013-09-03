@@ -1,0 +1,21 @@
+fix_scan bug的日志文件
+
+问题描述：
+MTK7601U wifi模块在ST平台上编译成功，加载模块后，在新的ST平台上启用新的无线网卡后，设置网卡参数等命令均能成功。
+
+   但是用命令iwlist wlan0 scan 对周围无线网络进行扫描时应该显示周围的已存在的无线网络(已知周围存在很多的无线网络)，但是均循环出现如下错误回显：
+
+   RTUSB_VendorRequest failed(-110),TxFlags=0x0, ReqType=IN, Req=0x7, Idx=0x500,pAd->Flags=0x30004442
+
+   函数定位在rt_usb_io.c中的RTUSB_VendorRequest函数
+
+解决方案：
+初步看是USB通讯出了问题，需要确认一些东西：  
+1.代码中的宏DPD_CALIBRATION_SUPPORT是否关闭，如果开启则去关闭它。
+2.注释掉chips/Mt7601.c 的953行：
+// AndesCalibrationOP(pAd, ANDES_CALIBRATION_RXIQ, 0);
+ 
+ 然后测试下问题是否依旧存在。
+  
+  如果问题依旧存在，则做第三步（此时的驱动还是刚才第二步的驱动）
+  3. 让硬件做下外接电源的实验，即7601由外部供电。看问题是否依旧存在。

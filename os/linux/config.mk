@@ -839,8 +839,10 @@ endif
 ifeq ("1","1")
 #	@echo -e ">>>>>>>>>>>>>>>>>>>>>>modify test housir<<<<<<<<<<<<<"
 ifeq ($(PLATFORM),ST)
+EXTRA_CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -Wall -O2 -Wundef -Wstrict-prototypes -Wno-trigraphs -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-aliasing -fno-common -fomit-frame-pointer -ffreestanding -m4-nofpu -o $(WFLAGS) 
 
-EXTRA_CFLAGS += \
+
+#EXTRA_CFLAGS += \
 -I$(LINUX_SRC)/include \
 -I$(RT28xx_DIR)/include \
 -I$(LINUX_SRC)/arch/sh/include \
@@ -855,7 +857,7 @@ endif
 endif
 
 ifeq ($(PLATFORM),offcial_ST)
-CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include -DCONFIG_PAGE_SIZE_64KB\
+CFLAGS := -D__KERNEL__ -I$(LINUX_SRC)/include 
 -Wall -O2 -Wundef -Wstrict-prototypes -Wno-trigraphs -Wdeclaration-after-statement -Wno-pointer-sign -fno-strict-aliasing -fno-common -fomit-frame-pointer -ffreestanding -m4-nofpu -o $(WFLAGS) 
 export CFLAGS
 

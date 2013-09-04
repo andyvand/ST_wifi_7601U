@@ -1,10 +1,8 @@
 include $(RT28xx_DIR)/os/linux/config.mk
 
-#MOD_NAME:=mt7601Usta
 obj_wsc :=
 obj_vht := 
 
-#chips/rt28xx.o added housir
 obj_cmm := \
 	../../common/crypt_md5.o\
 	../../common/crypt_sha2.o\
@@ -154,7 +152,6 @@ DAT_PATH = /opt/STM/STLinux-2.4/devkit/sh4/target/etc/Wireless/RT$(CHIPSET_DAT)S
 ###################
 DAT_FILE_NAME = RT$(CHIPSET_DAT)STA.dat
 endif
-#################>>>>OSABL_NO 异常 
 
 #endif // CONFIG_STA_SUPPORT //
 
@@ -234,10 +231,10 @@ ifeq ($(OSABL),NO)
 endif
 
 ifeq ($(OSABL),YES)
-	ifeq ($(HAS_CFG80211_SUPPORT),y)
-	$(MOD_NAME)-objs += \
-		../../os/linux/cfg80211drv.o
-	endif
+    ifeq ($(HAS_CFG80211_SUPPORT),y)
+    $(MOD_NAME)-objs += \
+        ../../os/linux/cfg80211drv.o
+    endif
 endif
 #endif // CRDA_SUPPORT //
 
@@ -250,7 +247,7 @@ endif
 
 
 ifeq ($(HAS_RT2880_RT2860_COEXIST),y)	
-	RT28XX_AP_OBJ += \
+    RT28XX_AP_OBJ += \
 					 ../../os/linux/rt_pci_rbus.o\
 					 ../../os/linux/rt_rbus_pci_util.o\
 					 ../../os/linux/pci_main_dev.o\
@@ -262,10 +259,10 @@ endif
 ifeq ($(HAS_WDS),y)
 	$(MOD_NAME)-objs += ../../ap/ap_wds.o
 
-	ifeq ($(OSABL),NO)
+    ifeq ($(OSABL),NO)
 		$(MOD_NAME)-objs += \
 			../../ap/ap_wds_inf.o
-	endif
+    endif
 endif
 
 #ifdef APCLI_SUPPORT
@@ -320,9 +317,9 @@ ifeq ($(HAS_CLIENT_WDS_SUPPORT),y)
 endif
 
 ifeq ($(HAS_EASY_CONFIG_SETUP_SUPPORT),y)
-	ifeq ($(PLATFORM),RALINK_3052)
+    ifeq ($(PLATFORM),RALINK_3052)
 	$(MOD_NAME)-objs += lib.a
-endif
+    endif
 endif
 
 endif
@@ -406,7 +403,7 @@ endif
 ifeq ($(HAS_LED_CONTROL_SUPPORT),y)
 	$(MOD_NAME)-objs += \
 		../../common/rt_led.o
-	endif
+endif
 	#endif // LED_CONTROL_SUPPORT //
 
 
@@ -431,10 +428,10 @@ endif
 
 #ifdef P2P_SUPPORT
 ifeq ($(OSABL),NO)
-	ifeq ($(HAS_P2P_SUPPORT),y)
+    ifeq ($(HAS_P2P_SUPPORT),y)
 	$(MOD_NAME)-objs += \
 		../../common/p2p_inf.o
-	endif
+    endif
 endif
 
 ifeq ($(HAS_P2P_SUPPORT),y)
@@ -490,7 +487,7 @@ endif
 endif
 #not go
 ifeq ($(HAS_P2P_SUPPORT),y)
-	ifeq ($(OSABL),NO)
+    ifeq ($(OSABL),NO)
 	$(MOD_NAME)-objs += \
 		../../ap/ap_mbss_inf.o\
 		../../common/rt_os_util.o\
@@ -498,27 +495,27 @@ ifeq ($(HAS_P2P_SUPPORT),y)
 		../../os/linux/sta_ioctl.o\
 		../../os/linux/rt_linux.o\
 		../../os/linux/rt_main_dev.o
-	else
+    else
 	$(MOD_NAME)-objs += \
 		../../os/linux/rt_symb.o
-	endif
+    endif
 endif
 #endif // P2P_SUPPORT //
 
 #ifdef CRDA_SUPPORT
 ifeq ($(OSABL),NO)
-	ifeq ($(HAS_CFG80211_SUPPORT),y)
+    ifeq ($(HAS_CFG80211_SUPPORT),y)
 	$(MOD_NAME)-objs += \
 		../../os/linux/cfg80211.o \
 		../../os/linux/cfg80211drv.o
-	endif
+    endif
 endif
 
 ifeq ($(OSABL),YES)
-	ifeq ($(HAS_CFG80211_SUPPORT),y)
+    ifeq ($(HAS_CFG80211_SUPPORT),y)
 	$(MOD_NAME)-objs += \
 		../../os/linux/cfg80211drv.o
-	endif
+    endif
 endif
 #endif // CRDA_SUPPORT //
 
@@ -527,7 +524,7 @@ endif
 ifeq ($(HAS_MULTI_CHANNEL),y)
 	$(MOD_NAME)-objs += \
 		../../common/multi_channel.o
-	endif
+endif
 	#endif /* CONFIG_MULTI_CHANNEL */
 
 endif
@@ -596,10 +593,10 @@ endif
 ifeq ($(HAS_WDS),y)
 	$(MOD_NAME)-objs += ../../ap/ap_wds.o
 
-	ifeq ($(OSABL),NO)
+    ifeq ($(OSABL),NO)
 		$(MOD_NAME)-objs += \
 			../../ap/ap_wds_inf.o
-	endif
+    endif
 endif
 
 ifeq ($(HAS_QOS_DLS_SUPPORT),y)
@@ -626,7 +623,7 @@ ifeq ($(HAS_APCLI),y)
 ifeq ($(OSABL),NO)
 	$(MOD_NAME)-objs += \
 		../../ap/ap_apcli_inf.o
-	endif
+endif
 endif
 #endif // APCLI_SUPPORT //
 
@@ -637,7 +634,7 @@ ifeq ($(HAS_ETH_CONVERT_SUPPORT), y)
 		../../common/cmm_mat_iparp.o \
 		../../common/cmm_mat_pppoe.o \
 		../../common/cmm_mat_ipv6.o
-	endif
+endif
 	#endif // ETH_CONVERT //
 
 ifeq ($(HAS_ATE),y)
@@ -658,30 +655,30 @@ ifeq ($(HAS_WAPI_SUPPORT),y)
 	$(MOD_NAME)-objs += \
 		../../common/libwapi.a\
 		../../common/wapi.o
-	endif
+endif
 	#endif // WAPI_SUPPORT //
 
 
 ifeq ($(HAS_CLIENT_WDS_SUPPORT),y)
 	$(MOD_NAME)-objs += \
 		../../common/client_wds.o
-	endif
+endif
 
 #ifdef CRDA_SUPPORT
 ifeq ($(OSABL),NO)
-	ifeq ($(HAS_CFG80211_SUPPORT),y)
+    ifeq ($(HAS_CFG80211_SUPPORT),y)
 	$(MOD_NAME)-objs += \
 		../../os/linux/cfg80211.o
-	endif
+    endif
 endif
 #endif // CRDA_SUPPORT //
 
 #ifdef P2P_SUPPORT
 ifeq ($(OSABL),NO)
-	ifeq ($(HAS_P2P_SUPPORT),y)
+    ifeq ($(HAS_P2P_SUPPORT),y)
 	$(MOD_NAME)-objs += \
 		../../common/p2p_inf.o
-	endif
+    endif
 endif
 
 ifeq ($(HAS_P2P_SUPPORT),y)
@@ -703,7 +700,7 @@ ifeq ($(HAS_P2P_SUPPORT),y)
 		../../common/p2p_ctrl.o\
 		../../common/p2p_disc_mng.o\
 		../../common/p2p_nego_mng.o
-	endif
+endif
 	#endif // P2P_SUPPORT //
 endif
 #endif // CONFIG_APSTA_SUPPORT //

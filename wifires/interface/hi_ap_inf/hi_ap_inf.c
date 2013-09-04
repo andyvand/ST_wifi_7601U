@@ -73,3 +73,18 @@ int HI_Ap_Start(char * ssid, char * security, char * password, int channel)
 	(void) wait(NULL);
 	return 0;
 }
+#if 0
+#include	<stdlib.h>
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  main
+ *  Description:  
+ * =====================================================================================
+ */
+int main ( int argc, char *argv[] )
+{
+
+    return EXIT_SUCCESS;
+}				/* ----------  end of function main  ---------- */
+#endif

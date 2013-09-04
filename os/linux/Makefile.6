@@ -301,7 +301,6 @@ ifeq ($(HAS_IDS_SUPPORT),y)
 	$(MOD_NAME)-objs += ../../ap/ap_ids.o
 endif
 
-endif
 
 
 #ifdef WAPI_SUPPORT
@@ -326,12 +325,12 @@ ifeq ($(HAS_EASY_CONFIG_SETUP_SUPPORT),y)
 endif
 endif
 
-#endif
+endif
 #endif // CONFIG_AP_SUPPORT //
 #>>>>>>>>>STAAAAAAAAAAAAAAAAAAAAAAAA
 #ifdef CONFIG_STA_SUPPORT
 ifeq ($(RT28xx_MODE), STA)
-	$(MOD_NAME)-objs += \
+	$(MOD_NAME)-objs := \
 		../../os/linux/rt_profile.o\
 		../../sta/assoc.o\
 		../../sta/auth.o\
@@ -1036,7 +1035,7 @@ endif
 endif
 endif
 
-install:print_env
+install:
 	rm -rf $(DAT_PATH)
 	$(shell [ ! -f /opt/STM/STLinux-2.4/devkit/sh4/target/etc/Wireless ] && mkdir/opt/STM/STLinux-2.4/devkit/sh4/target/etc/Wireless)
 	mkdir $(DAT_PATH)

@@ -51,7 +51,7 @@ HAS_MCAST_RATE_SPECIFIC_SUPPORT=n
 # Support for Multiple Cards
 HAS_MC_SUPPORT=n
 
-#Support for PCI-MSI
+#Support for PCI-MSI 允许设备开1,2,4,8,16,32个中断
 HAS_MSI_SUPPORT=n
 
 
@@ -254,143 +254,143 @@ endif
 ifeq ($(RT28xx_MODE),AP)
 WFLAGS += -DCONFIG_AP_SUPPORT  -DUAPSD_SUPPORT -DMBSS_SUPPORT -DIAPP_SUPPORT -DDBG -DDOT1X_SUPPORT -DAP_SCAN_SUPPORT -DSCAN_SUPPORT
 
-ifeq ($(HAS_APCLI_WPA_SUPPLICANT),y)
-WFLAGS += -DApCli_WPA_SUPPLICANT_SUPPORT
-endif
+    ifeq ($(HAS_APCLI_WPA_SUPPLICANT),y)
+        WFLAGS += -DApCli_WPA_SUPPLICANT_SUPPORT
+    endif
 
-ifeq ($(HAS_HOSTAPD_SUPPORT),y)
-WFLAGS += -DHOSTAPD_SUPPORT
-endif
+    ifeq ($(HAS_HOSTAPD_SUPPORT),y)
+        WFLAGS += -DHOSTAPD_SUPPORT
+    endif
 
-ifeq ($(HAS_ATE),y)
-WFLAGS += -DRALINK_ATE
-WFLAGS += -DCONFIG_RT2880_ATE_CMD_NEW
-WFLAGS += -I$(RT28xx_DIR)/ate/include
-ifeq ($(HAS_QA_SUPPORT),y)
-WFLAGS += -DRALINK_QA
-endif
-endif
+    ifeq ($(HAS_ATE),y)
+        WFLAGS += -DRALINK_ATE
+        WFLAGS += -DCONFIG_RT2880_ATE_CMD_NEW
+        WFLAGS += -I$(RT28xx_DIR)/ate/include
+        ifeq ($(HAS_QA_SUPPORT),y)
+            WFLAGS += -DRALINK_QA
+        endif
+    endif
 
-ifeq ($(HAS_RSSI_FEEDBACK),y)
-WFLAGS += -DRSSI_FEEDBACK
-endif
-
-
-
-
-ifeq ($(HAS_WSC),y)
-WFLAGS += -DWSC_AP_SUPPORT
-
-ifeq ($(HAS_WSC_V2),y)
-WFLAGS += -DWSC_V2_SUPPORT
-endif
-ifeq ($(HAS_WSC_LED),y)
-WFLAGS += -DWSC_LED_SUPPORT
-endif
-endif
+    ifeq ($(HAS_RSSI_FEEDBACK),y)
+        WFLAGS += -DRSSI_FEEDBACK
+    endif
 
 
 
-ifeq ($(HAS_APCLI),y)
-WFLAGS += -DAPCLI_SUPPORT -DMAT_SUPPORT -DAP_SCAN_SUPPORT -DSCAN_SUPPORT
+
+    ifeq ($(HAS_WSC),y)
+        WFLAGS += -DWSC_AP_SUPPORT
+
+        ifeq ($(HAS_WSC_V2),y)
+            WFLAGS += -DWSC_V2_SUPPORT
+        endif
+        ifeq ($(HAS_WSC_LED),y)
+            WFLAGS += -DWSC_LED_SUPPORT
+        endif
+    endif
+
+
+
+    ifeq ($(HAS_APCLI),y)
+        WFLAGS += -DAPCLI_SUPPORT -DMAT_SUPPORT -DAP_SCAN_SUPPORT -DSCAN_SUPPORT
 #ifeq ($(HAS_ETH_CONVERT_SUPPORT), y)
 #WFLAGS += -DETH_CONVERT_SUPPORT
-endif
+    endif
 
-ifeq ($(HAS_IGMP_SNOOP_SUPPORT),y)
-WFLAGS += -DIGMP_SNOOP_SUPPORT
-endif
+    ifeq ($(HAS_IGMP_SNOOP_SUPPORT),y)
+        WFLAGS += -DIGMP_SNOOP_SUPPORT
+    endif
 
-ifeq ($(HAS_CS_SUPPORT),y)
-WFLAGS += -DCARRIER_DETECTION_SUPPORT
-endif
+    ifeq ($(HAS_CS_SUPPORT),y)
+        WFLAGS += -DCARRIER_DETECTION_SUPPORT
+    endif
 
-ifeq ($(HAS_MCAST_RATE_SPECIFIC_SUPPORT), y)
-WFLAGS += -DMCAST_RATE_SPECIFIC
-endif
-
-
-
-ifeq ($(HAS_QOS_DLS_SUPPORT),y)
-WFLAGS += -DQOS_DLS_SUPPORT
-endif
-
-ifeq ($(HAS_SNMP_SUPPORT),y)
-WFLAGS += -DSNMP_SUPPORT
-endif
-
-ifeq ($(HAS_DOT11_N_SUPPORT),y)
-WFLAGS += -DDOT11_N_SUPPORT
-
-ifeq ($(HAS_DOT11N_DRAFT3_SUPPORT),y)
-WFLAGS += -DDOT11N_DRAFT3
-endif
-
-ifeq ($(HAS_TXBF_SUPPORT),y)
-WFLAGS += -DTXBF_SUPPORT
-endif
-
-ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
-WFLAGS += -DNEW_RATE_ADAPT_SUPPORT
-endif
-
-ifeq ($(HAS_RATE_ADAPT_AGS_SUPPORT),y)
-WFLAGS += -DAGS_SUPPORT
-endif
-
-ifeq ($(HAS_GREENAP_SUPPORT),y)
-WFLAGS += -DGREENAP_SUPPORT
-endif
-
-endif
-
-ifeq ($(HAS_AUTO_CH_SELECT_ENHANCE),y)
-WFLAGS += -DAUTO_CH_SELECT_ENHANCE
-endif
-
-ifeq ($(HAS_STATS_COUNT),y)
-WFLAGS += -DSTATS_COUNT_SUPPORT
-endif
-
-ifeq ($(HAS_TSSI_ANTENNA_VARIATION),y)
-WFLAGS += -DTSSI_ANTENNA_VARIATION
-endif
+    ifeq ($(HAS_MCAST_RATE_SPECIFIC_SUPPORT), y)
+        WFLAGS += -DMCAST_RATE_SPECIFIC
+    endif
 
 
 
-ifeq ($(HAS_CFG80211_SUPPORT),y)
-WFLAGS += -DRT_CFG80211_SUPPORT -DEXT_BUILD_CHANNEL_LIST
-ifeq ($(HAS_RFKILL_HW_SUPPORT),y)
-WFLAGS += -DRFKILL_HW_SUPPORT
-endif
-endif
+    ifeq ($(HAS_QOS_DLS_SUPPORT),y)
+        WFLAGS += -DQOS_DLS_SUPPORT
+    endif
 
-ifeq ($(OSABL),YES)
-WFLAGS += -DOS_ABL_SUPPORT
-ifeq ($(HAS_OSABL_FUNC_SUPPORT),y)
-WFLAGS += -DOS_ABL_FUNC_SUPPORT
-endif
-ifeq ($(HAS_OSABL_OS_PCI_SUPPORT),y)
-WFLAGS += -DOS_ABL_OS_PCI_SUPPORT
-endif
-ifeq ($(HAS_OSABL_OS_USB_SUPPORT),y)
-WFLAGS += -DOS_ABL_OS_USB_SUPPORT
-endif
-ifeq ($(HAS_OSABL_OS_RBUS_SUPPORT),y)
-WFLAGS += -DOS_ABL_OS_RBUS_SUPPORT
-endif
-ifeq ($(HAS_OSABL_OS_AP_SUPPORT),y)
-WFLAGS += -DOS_ABL_OS_AP_SUPPORT
-endif
-ifeq ($(HAS_OSABL_OS_STA_SUPPORT),y)
-WFLAGS += -DOS_ABL_OS_STA_SUPPORT
-endif
-endif
+    ifeq ($(HAS_SNMP_SUPPORT),y)
+        WFLAGS += -DSNMP_SUPPORT
+    endif
+
+    ifeq ($(HAS_DOT11_N_SUPPORT),y)
+        WFLAGS += -DDOT11_N_SUPPORT
+
+        ifeq ($(HAS_DOT11N_DRAFT3_SUPPORT),y)
+            WFLAGS += -DDOT11N_DRAFT3
+        endif
+
+        ifeq ($(HAS_TXBF_SUPPORT),y)
+            WFLAGS += -DTXBF_SUPPORT
+        endif
+
+        ifeq ($(HAS_NEW_RATE_ADAPT_SUPPORT),y)
+            WFLAGS += -DNEW_RATE_ADAPT_SUPPORT
+        endif
+
+        ifeq ($(HAS_RATE_ADAPT_AGS_SUPPORT),y)
+            WFLAGS += -DAGS_SUPPORT
+        endif
+
+        ifeq ($(HAS_GREENAP_SUPPORT),y)
+            WFLAGS += -DGREENAP_SUPPORT
+        endif
+
+    endif
+
+    ifeq ($(HAS_AUTO_CH_SELECT_ENHANCE),y)
+        WFLAGS += -DAUTO_CH_SELECT_ENHANCE
+    endif
+
+    ifeq ($(HAS_STATS_COUNT),y)
+        WFLAGS += -DSTATS_COUNT_SUPPORT
+    endif
+
+    ifeq ($(HAS_TSSI_ANTENNA_VARIATION),y)
+        WFLAGS += -DTSSI_ANTENNA_VARIATION
+    endif
 
 
-ifeq ($(HAS_TXRX_SW_ANTDIV_SUPPORT),y)
-WFLAGS += -DTXRX_SW_ANTDIV_SUPPORT
-endif
+
+    ifeq ($(HAS_CFG80211_SUPPORT),y)
+        WFLAGS += -DRT_CFG80211_SUPPORT -DEXT_BUILD_CHANNEL_LIST
+        ifeq ($(HAS_RFKILL_HW_SUPPORT),y)
+            WFLAGS += -DRFKILL_HW_SUPPORT
+        endif
+    endif
+
+    ifeq ($(OSABL),YES)
+        WFLAGS += -DOS_ABL_SUPPORT
+        ifeq ($(HAS_OSABL_FUNC_SUPPORT),y)
+            WFLAGS += -DOS_ABL_FUNC_SUPPORT
+        endif
+        ifeq ($(HAS_OSABL_OS_PCI_SUPPORT),y)
+            WFLAGS += -DOS_ABL_OS_PCI_SUPPORT
+        endif
+        ifeq ($(HAS_OSABL_OS_USB_SUPPORT),y)
+            WFLAGS += -DOS_ABL_OS_USB_SUPPORT
+        endif
+        ifeq ($(HAS_OSABL_OS_RBUS_SUPPORT),y)
+            WFLAGS += -DOS_ABL_OS_RBUS_SUPPORT
+        endif
+        ifeq ($(HAS_OSABL_OS_AP_SUPPORT),y)
+            WFLAGS += -DOS_ABL_OS_AP_SUPPORT
+        endif
+        ifeq ($(HAS_OSABL_OS_STA_SUPPORT),y)
+            WFLAGS += -DOS_ABL_OS_STA_SUPPORT
+        endif
+    endif
+
+
+    ifeq ($(HAS_TXRX_SW_ANTDIV_SUPPORT),y)
+        WFLAGS += -DTXRX_SW_ANTDIV_SUPPORT
+    endif
 
 
 endif #// endif of RT2860_MODE == AP //
@@ -784,25 +784,11 @@ endif
 
 
 
-ifneq ($(findstring $(RT28xx_MODE),AP),)
-ifeq ($(HAS_CS_SUPPORT), y)
-WFLAGS +=  -DCARRIER_DETECTION_FIRMWARE_SUPPORT
-endif
-endif
-
-ifneq ($(findstring $(RT28xx_MODE),AP),)
-WFLAGS += -DSPECIFIC_BCN_BUF_SUPPORT
-endif
-#endif
 
 
 
 
-ifneq ($(findstring $(RT28xx_MODE),AP),)
-#WFLAGS += -DSPECIFIC_BCN_BUF_SUPPORT
-endif
 
-#endif
 
 
 
@@ -899,7 +885,7 @@ ifeq ($(PLATFORM),MT85XX)
 	export CFLAGS
     else
 	# Linux 2.6
-	EXTRA_CFLAGS += $(WFLAGS) 
+    EXTRA_CFLAGS += $(WFLAGS) 
 	EXTRA_CFLAGS += -D _NO_TYPEDEF_BOOL_ \
 	                -D _NO_TYPEDEF_UCHAR_ \
 	                -D _NO_TYPEDEF_UINT8_ \

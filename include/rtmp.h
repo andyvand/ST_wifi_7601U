@@ -3688,7 +3688,7 @@ struct _RTMP_ADAPTER {
 	USHORT IQControl;
 #endif /* RT8592 */
 
-#if defined(RT3290) || defined(RT65xx) || defined(MT7601) || defined(RT2870)/*housir:  */
+#if defined(RT3290) || defined(RT65xx) || defined(MT7601) 
 
 	WLAN_FUN_CTRL_STRUC WlanFunCtrl;
 #endif /* defined(RT3290) || defined(RT65xx) || defined(MT7601) */

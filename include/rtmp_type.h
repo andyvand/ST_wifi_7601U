@@ -29,26 +29,6 @@
 
 #ifndef __RTMP_TYPE_H__
 #define __RTMP_TYPE_H__
-/*housir:  */
-#if 0
-typedef long unsigned int size_t;
-#include <linux/module.h>
-#include <linux/types.h>
-#include <linux/fs.h>
-#include <linux/errno.h>
-#include <linux/mm.h>
-#include <linux/sched.h>
-#include <linux/init.h>
-#include <linux/kernel.h> 
-#include <linux/cdev.h>
-#include <asm/io.h>
-#include <asm/system.h>
-#include <asm/uaccess.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <aaaaaaaa.h>
-#endif
-/*housir:  */
 
 
 #ifndef GNU_PACKED

@@ -40,7 +40,6 @@
 /* Most are for debug. Driver doesn't touch PBF register. */
 #define PBF_SYS_CTRL 	 0x0400
 
-#if 0
 #ifdef RT_BIG_ENDIAN
 typedef union _PBF_SYS_CTRL_STRUC {
 	struct {
@@ -91,8 +90,7 @@ typedef union _PBF_SYS_CTRL_STRUC {
 	}field;
 	UINT32 word;
 } PBF_SYS_CTRL_STRUC;
-#endif  /*housir:  */
-#endif
+#endif  
 
 
 #define PBF_CFG			0x0408

@@ -27,10 +27,10 @@
 */
 
 #include "rt_config.h"
-/*housir:  */
+
 #ifdef RT28xx
 extern VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw);
-#endif/*housir:  */
+#endif/*RT28xx housir:  */
 
 
 #ifdef CONFIG_STA_SUPPORT

@@ -41,12 +41,12 @@ extern RTMP_OS_ABL_OPS *pRaOsOps;
 
 #else
 
-#ifdef RTMP_MODULE_OS/*housir: mark 将housir_取消->还原 */
+#ifdef RTMP_MODULE_OS
 /* for util/netif */
 #include "os/rt_linux.h"
 #else
 /* for core */
-#include "os/rt_drv.h"/*housir:  mark*/
+#include "os/rt_drv.h"
 #endif /* RTMP_MODULE_OS */
 #endif /* OS_ABL_FUNC_SUPPORT */
 #endif /* LINUX */

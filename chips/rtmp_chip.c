@@ -34,10 +34,10 @@
 extern VOID RT28xx_ChipSwitchChannel(    
 	    IN PRTMP_ADAPTER                        pAd,
 	    IN UCHAR                                        Channel,
-	    IN BOOLEAN                                      bScan);/*housir:  */
-extern VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw);/*housir:  */
+	    IN BOOLEAN                                      bScan);
+extern VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw);
 
-#endif
+#endif/*housir:  RT28xx*/
 
 FREQUENCY_ITEM RtmpFreqItems3020[] =
 {	

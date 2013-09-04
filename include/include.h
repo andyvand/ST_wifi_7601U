@@ -16,7 +16,7 @@
  *
  * =====================================================================================
  */
-
+#if 0
 #include <asm/cache.h>
 #include <linux/autoconf.h>
 #include <rtmp_type.h>
@@ -30,3 +30,4 @@
 #include <os/rt_os.h>
 //#include <rtmp.h>
 //#include <rtmp_and.h>
+#endif

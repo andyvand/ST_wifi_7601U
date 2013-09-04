@@ -27,7 +27,6 @@
 */
 #include "rt_config.h"
 
-extern VOID dumpRxFCEInfo(RTMP_ADAPTER *pAd, RXFCE_INFO *pRxFceInfo);/*housir:  */
 
 VOID STARxEAPOLFrameIndicate(
 	IN PRTMP_ADAPTER pAd,

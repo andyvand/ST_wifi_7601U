@@ -162,9 +162,8 @@ ifeq ($(PLATFORM),DM6446)
 else
 ifeq ($(PLATFORM),FREESCALE8377)
 	$(MAKE) ARCH=powerpc CROSS_COMPILE=$(CROSS_COMPILE) -C  $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules
-else#
+else#->
 	$(MAKE) -C $(LINUX_SRC) SUBDIRS=$(RT28xx_DIR)/os/linux modules 
-	#->
 endif
 endif
 
@@ -185,19 +184,19 @@ ifeq ($(OSABL),YES)
 endif
 #	rm -f os/linux/rt$(MODULE)ap.ko.lzma
 #	/root/bin/lzma e os/linux/rt$(MODULE)ap.ko os/linux/rt$(MODULE)ap.ko.lzma
-else	
+else	#!AP
 ifeq ($(RT28xx_MODE),APSTA)
 #	cp -f $(RT28xx_DIR)/os/linux/rt$(MODULE)apsta.ko /tftpboot
 ifeq ($(OSABL),YES)
 #	cp -f $(RT28xx_DIR)/os/linux/rtutil$(MODULE)apsta.ko /tftpboot
 #	cp -f $(RT28xx_DIR)/os/linux/rtnet$(MODULE)apsta.ko /tftpboot
 endif
-else
+else   #!AP && !APSTA
 ifneq ($(findstring 7601,$(CHIPSET)),)  
 	echo ">>>>><<<<<<<<<<<7601"
 	cp -f $(RT28xx_DIR)/os/linux/mt$(MODULE)sta.ko $(LICHEE_MOD_DIR)/
 else
-#	cp -f $(RT28xx_DIR)/os/linux/rt$(MODULE)sta.ko /tftpboot
+#	cp -f $(RT28xx_D   #!AP && !APSTAIR)/os/linux/rt$(MODULE)sta.ko /tftpboot
 endif
 ifeq ($(OSABL),YES)
 ifneq ($(findstring 7601,$(CHIPSET)),)

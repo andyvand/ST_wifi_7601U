@@ -950,7 +950,7 @@ VOID MT7601_INIT_CAL(RTMP_ADAPTER *pAd)
 	AndesCalibrationOP(pAd, ANDES_CALIBRATION_TXIQ, 0);
 
 	/* RXIQ */
-	AndesCalibrationOP(pAd, ANDES_CALIBRATION_RXIQ, 0);
+	AndesCalibrationOP(pAd, ANDES_CALIBRATION_RXIQ, 0);/*housir: 邮件中注释掉便于实验 */
 
 #ifdef DPD_CALIBRATION_SUPPORT
 	/* DPD-Calibration */

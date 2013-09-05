@@ -23,7 +23,7 @@ MODULE_ALIAS("usb:v148Fp7650d*dc*dsc*dp*ic*isc*ip*");
 MODULE_ALIAS("usb:v148Fp6370d*dc*dsc*dp*ic*isc*ip*");
 MODULE_ALIAS("usb:v148Fp7601d*dc*dsc*dp*ic*isc*ip*");
 
-MODULE_INFO(srcversion, "9869611C9790D432FA77178");
+MODULE_INFO(srcversion, "1E4E465F094800FB6EA0AA0");
 #ifdef CONFIG_LKM_ELF_HASH
 static unsigned long __symtab_hash[]
 __used

@@ -1,0 +1,60 @@
+[PATCH] cfg80211/nl80211: Send AssocReq IEs to user space in AP mode 
+
+
+When user space SME/MLME (e.g., hostapd) is not used in AP mode, the 
+IEs from the (Re)Association Request frame that was processed in
+firmware need to be made available for user space (e.g., RSN IE for 
+hostapd). Allow this to be done with cfg80211_new_sta().
+
+Signed-off-by: Jouni Malinen <jouni@xxxxxxxxxxxxxxxx>
+---
+ include/net/cfg80211.h |    8 ++++++++
+ net/wireless/nl80211.c |    4 ++++
+ 2 files changed, 12 insertions(+), 0 deletions(-)
+
+--- a/include/net/cfg80211.h	2013-09-05 12:30:32.771452725 +0800
++++ b/include/net/cfg80211.h	2013-09-05 12:38:47.653906714 +0800
+@@ -321,6 +321,8 @@
+ 	STATION_INFO_TX_BITRATE		= 1<<7,
+ 	STATION_INFO_RX_PACKETS		= 1<<8,
+ 	STATION_INFO_TX_PACKETS		= 1<<9,
++    STATION_INFO_CONNECTED_TIME = 1<<16,
++    STATION_INFO_ASSOC_REQ_IES  = 1<<17
+ };
+ 
+ /**
+@@ -371,6 +373,11 @@
+  * @rx_packets: packets received from this station
+  * @tx_packets: packets transmitted to this station
+  * @generation: generation number for nl80211 dumps.
++ * @assoc_req_ies: IEs from (Re)Association Request.
++ * This is used only when in AP mode with drivers that do not use
++ * user space MLME/SME implementation. The information is provided for
++ * the cfg80211_new_sta() calls to notify user space of the IEs.
++ * @assoc_req_ies_len: Length of assoc_req_ies buffer in octets.
+  *	This number should increase every time the list of stations
+  *	changes, i.e. when a station is added or removed, so that
+  *	userspace can tell whether it got a consistent snapshot.
+@@ -389,6 +396,9 @@
+ 	u32 tx_packets;
+ 
+ 	int generation;
++
++    const u8 *assoc_req_ies;
++    size_t assoc_req_ies_len;
+ };
+ 
+ /**
+--- a/net/wireless/nl80211.c	2013-09-05 12:31:27.091722090 +0800
++++ b/net/wireless/nl80211.c	2013-09-05 12:41:35.910741058 +0800
+@@ -1631,6 +1631,10 @@
+ 			    sinfo->tx_packets);
+ 	nla_nest_end(msg, sinfoattr);
+ 
++    if (sinfo->assoc_req_ies)
++        NLA_PUT(msg, NL80211_ATTR_IE, sinfo->assoc_req_ies_len,
++                sinfo->assoc_req_ies);
++
+ 	return genlmsg_end(msg, hdr);
+ 
+  nla_put_failure:

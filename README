@@ -1,3 +1,5 @@
 1.make all之前请确定指向内核目录的linux-2.6.20文件存在不存在运行
 sudo ln -s /opt/STM/STLinux-2.4/devkit/sources/kernel/linux-sh4 ./linux-2.6.20
 2.若在编译过程中出现不能找到bound.h文件,说明没有运行make kernel MENUCONGIG=1产生内核的参数头文件，请在stapp目录运行make kernel MENUCONFIG=1选好后保存即可，不需要编译内核.
+3.打开因为补丁编译出错的宏，增加内核补丁文件cfg80211_new_sta.patch 在内核目录patch -p1 < cfg80211_new_sta.patch进行打补丁
+

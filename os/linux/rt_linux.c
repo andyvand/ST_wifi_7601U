@@ -3497,13 +3497,13 @@ VOID CFG80211OS_NewSta(IN PNET_DEV pNetDev, IN const PUCHAR mac_addr, IN const P
 	NdisZeroMemory(&sinfo, sizeof(sinfo));
 
 /* If get error here, be sure patch the cfg80211_new_sta.patch into kernel. */
-#if 0  /*housir: 0 replace 1 here */
+#if 1  /*housir: 0 replace 1 here */
 	sinfo.filled = STATION_INFO_ASSOC_REQ_IES;
 #else
 	sinfo.filled = 0;
 #endif
 
-#if 0  /*housir: 0 replace 1 */
+#if 1  /*housir: 0 replace 1 */
 	mgmt = (struct ieee80211_mgmt *) assoc_frame;	
 	sinfo.assoc_req_ies_len = assoc_len - 24 - 4;
 	sinfo.assoc_req_ies = mgmt->u.assoc_req.variable;

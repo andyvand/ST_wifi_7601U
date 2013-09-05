@@ -35,7 +35,6 @@ Kconfig
 Makefile
 Makefile.PC
 Makefile.android
-README
 ate/chips/mrgtmp0
 ate/common/mrgtmp0
 errlog

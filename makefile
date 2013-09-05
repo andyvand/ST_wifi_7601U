@@ -71,7 +71,6 @@ endif
 ifeq ($(PLATFORM),ST)
 LINUX_SRC = ./linux-2.6.20
 CROSS_COMPILE = /opt/STM/STLinux-2.4/devkit/sh4/bin/sh4-linux-
-LINUX_SRC_MODULE = /opt/STM/STLinux-2.4/devkit/sources/kernel/linux-2.6.32/drivers/staging/rt2870
 ARCH := sh
 export ARCH
 endif

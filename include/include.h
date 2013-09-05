@@ -3,7 +3,7 @@
  *       Copyright (c), 2013-2020, Newland C&S.
  *       Filename:  include.h
  *
- *    Description:  移植过程中,未定义的类型提前包含
+ *    Description:  移植过程中,未定义的类型提前包含,该文件废弃，解决错编译2.4的出现的错误.2.6的核不用
  *         Others:
  *
  *        Version:  1.0
@@ -30,4 +30,4 @@
 #include <os/rt_os.h>
 //#include <rtmp.h>
 //#include <rtmp_and.h>
-#endif
+#e

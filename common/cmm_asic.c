@@ -28,11 +28,6 @@
 
 #include "rt_config.h"
 
-#if 0
-#ifdef RT28xx
-extern VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw);
-#endif/*RT28xx housir:  */
-#endif
 
 #ifdef CONFIG_STA_SUPPORT
 VOID AsicUpdateAutoFallBackTable(

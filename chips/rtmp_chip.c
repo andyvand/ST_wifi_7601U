@@ -29,17 +29,6 @@
 
 #include "rt_config.h"
 
-#if 0
-#ifdef RT28xx
-
-extern VOID RT28xx_ChipSwitchChannel(    
-	    IN PRTMP_ADAPTER                        pAd,
-	    IN UCHAR                                        Channel,
-	    IN BOOLEAN                                      bScan);
-extern VOID RT28xx_ch_tunning(RTMP_ADAPTER *pAd, INT bw);
-
-#endif/*housir:  RT28xx*/
-#endif
 
 FREQUENCY_ITEM RtmpFreqItems3020[] =
 {	

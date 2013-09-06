@@ -51,4 +51,5 @@ os/linux/Makefile.libwapi.4
 os/linux/Makefile.libwapi.6
 os/linux/Module.symvers
 os/linux/modules.order
+os/linux/mt7601Usta.mod.c
 

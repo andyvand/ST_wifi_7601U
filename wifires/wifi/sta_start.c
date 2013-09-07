@@ -10,7 +10,7 @@
 #include "hi_sta_inf.h"
 
 #define MAX_SCAN_AP 100
-
+#define DEBUG
 /**
  * @brief 
  *

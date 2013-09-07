@@ -60,6 +60,7 @@
  */
 void extract_info(char *src, char sym, char *ss[])
 {
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
 	*ss++ = src--;
 	while (*++src) {
 		if (*src == sym) {
@@ -78,6 +79,7 @@ void extract_info(char *src, char sym, char *ss[])
  */
 void extract_ap_info(char *src, char sym, char *ss[])
 {
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
 	char *p;
 
 	p = strrchr(src, '"');
@@ -101,6 +103,7 @@ void extract_ap_info(char *src, char sym, char *ss[])
  */
 void store_info(OUT struct wifi_info *dev_info, IN char *src[])
 {
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
 	if (dev_info == NULL)
 		return;
 
@@ -124,6 +127,8 @@ void store_info(OUT struct wifi_info *dev_info, IN char *src[])
  */
 int connect_ap(struct sta_link_info *link_info)
 {
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
+    
 	int pid = 0;
 	int err = 0;
 	int status = 0;
@@ -155,6 +160,7 @@ int connect_ap(struct sta_link_info *link_info)
 
 int sta_ioctl(struct sta_link_info *link_info, int cmd)
 {
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
 	int err = 0;
 	pid_t pid = 0;
 	int status = 0;
@@ -218,6 +224,7 @@ int sta_ioctl(struct sta_link_info *link_info, int cmd)
  */
 int get_security(INOUT struct sta_link_info *link_info)
 {
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
 	int err = 0;
 	pid_t pid = 0;
 	int status = 0;
@@ -272,7 +279,9 @@ int get_security(INOUT struct sta_link_info *link_info)
 int get_ap_raw_info(IN struct wifi_info **ap_list, 
 		OUT int *ap_cnt, IN char *interface)
 {
-	int cnt = 0;
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
+	
+    int cnt = 0;
 	int all_ap = 0;
 	int len = 0;
 	char *buf;
@@ -362,6 +371,8 @@ int get_ap_raw_info(IN struct wifi_info **ap_list,
  */
 int scan_for_ap(OUT int *ap_cnt, IN char *interface)
 {
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
+    
 	int err = 0;
 	pid_t pid = 0;
 	int cnt = 0;
@@ -446,6 +457,7 @@ int scan_for_ap(OUT int *ap_cnt, IN char *interface)
  */
 void show_list(IN int total, IN struct wifi_info *list)
 {
+    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
 	int cnt = 0;
 	#define SHOW_FORMAT "%-40s %-10s %-10s %-10s %-10s\n"
 	PRINTF_CA(SHOW_FORMAT, "SSID", "CHANNEL", "SIGNAL", "ENCRYPT", "SECURITY");

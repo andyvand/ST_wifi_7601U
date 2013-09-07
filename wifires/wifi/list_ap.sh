@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 ###############################################################################
 LINE=74
 MARGIN=40
@@ -6,7 +6,7 @@ SPACE="                                                         "
 MSG=""
 LSTRING=""
 COUNT=0
-DEVICE="9271 3070 5370 8178 8176 002b 3c0d"
+DEVICE="7601"
 TOTAL_TMP=""
 TOTAL_INFO=""
 RESULT_PATH="/dev/wifi"
@@ -19,32 +19,16 @@ load_drv ()
 	local driver_cmd=""
 	local driver_path="/sbin"
 	local drv_flag="" 
-
-	if [ ${ic_device} = "8176" ]; then
-		ic_device=8178
-	fi
+    
+    echo ">>>>>>load_drv"
 
 	case ${ic_device} in
-	9271)
-		interface=wlan0
-		driver_cmd="wifi_drv_load.usb_ar${ic_device}sta"
-		if [ -e "$driver_path/$driver_cmd" ]
-		then
-			drv_flag=`lsmod | grep "ath9k"`
-			if [ -z "$drv_flag" ]; then
-				"$driver_path/$driver_cmd" > /dev/null 
-			fi
-		else
-			echo "No command ${driver_cmd} found"
-		fi
-
-		;;
-	3070)
-		interface=wlan0
+	7601)
+		interface=wlan1
 		driver_cmd="wifi_drv_load.usb_rt${ic_device}sta"
 		if [ -e "$driver_path/$driver_cmd" ]
 		then
-			drv_flag=`lsmod | grep "rt5370sta"`
+			drv_flag=`lsmod | grep "mt7601Usta"`
 			if [ -z "$drv_flag" ]; then
 				"$driver_path/$driver_cmd" > /dev/null
 			fi
@@ -53,64 +37,7 @@ load_drv ()
 		fi
 
 		;;
-	3c0d)
-		interface=wlan0
-		driver_cmd="wifi_drv_load.usb_rt5370sta"
-		if [ -e "$driver_path/$driver_cmd" ]
-		then
-			drv_flag=`lsmod | grep "rt5370sta"`
-			if [ -z "$drv_flag" ]; then
-				"$driver_path/$driver_cmd" > /dev/null
-			fi
-		else
-			echo "No command ${driver_cmd} found"
-		fi
 
-		;;
-	5370)
-		interface=wlan0
-		driver_cmd="wifi_drv_load.usb_rt${ic_device}sta"
-		if [ -e "$driver_path/$driver_cmd" ]
-		then
-			drv_flag=`lsmod | grep "rt5370sta"`
-			if [ -z "$drv_flag" ]; then
-				"$driver_path/$driver_cmd" > /dev/null
-			fi
-		else
-			echo "No command ${driver_cmd} found"
-		fi
-
-		;;
-	8178)
-		ic_device="8188cu"
-		interface=wlan0
-		driver_cmd="wifi_drv_load.usb_rtl${ic_device}sta"
-		if [ -e "$driver_path/$driver_cmd" ]
-		then
-			drv_flag=`lsmod | grep "rtl8192cu"`
-			if [ -z "$drv_flag" ]; then
-				"$driver_path/$driver_cmd" > /dev/null
-			fi
-		else
-			echo "No command ${driver_cmd} found"
-		fi
-
-		;;
-	002b)
-		ic_device="9285"
-		interface=wlan0
-		driver_cmd="wifi_drv_load.usb_ar${ic_device}sta"
-		if [ -e "$driver_path/$driver_cmd" ]
-		then
-			drv_flag=`lsmod | grep "ath9k"`
-			if [ -z "$drv_flag" ]; then
-				"$driver_path/$driver_cmd" > /dev/null
-			fi
-		else
-			echo "No command ${driver_cmd} found"
-		fi
-
-		;;
 	*)
 		echo "this device not supported."
 		;;
@@ -119,6 +46,7 @@ load_drv ()
 ###############################################################################
 dev_find ()
 {
+echo ">>>>>>dev_find"
 	local obj=""
 	local str=""
 	local num1=""
@@ -166,11 +94,13 @@ dev_find ()
 		echo "no supported device found."
 		exit
 	fi
+echo "<<<<<<devfind"
 	
 }
 ###############################################################################
 device_action ()
 {
+echo ">>>>>>dev_action"
 	local i=1
 	local tmp=0
 	local total=1
@@ -207,6 +137,7 @@ device_action ()
 			load_drv "$target" 
 		fi
 	done
+echo "<<<<<<dev_action"
 }
 ###############################################################################
 align_print ()
@@ -367,6 +298,7 @@ device_status ()
 ###############################################################################
 getmsg ()
 {
+echo ">>>>>>getmsg"
 	local i
 	local tmp
 	local msg
@@ -533,13 +465,15 @@ do_help ()
 	echo "	./$SELF -s interface ssid"
 	echo "		 -p        - print ap table"
 	echo "		 -s        - get security type, such as NONE, WEP, WPAPSK"
-	echo "		 interface - network interface, such as wlan0, ra0"
+	echo "		 interface - network interface, such as wlan1, ra0"
 	echo "		 ssid      - ap's identification."
 	echo "Example:"
-	echo "	./$SELF -p wlan0"
-	echo "	./$SELF -s wlan0 dlink"
+	echo "	./$SELF -p wlan1"
+	echo "	./$SELF -s wlan1 dlink"
 	exit 0
 }
+
+echo ">>>>>>main"
 
 if [ $# != 2 -a $# != 3 ]; then
 	do_help

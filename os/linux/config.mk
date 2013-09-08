@@ -873,7 +873,7 @@ ifeq ($(PLATFORM),PC)
 	export CFLAGS
     else
 	# Linux 2.6
-	EXTRA_CFLAGS := $(WFLAGS) 
+	EXTRA_CFLAGS := -DDBG $(WFLAGS) 
     endif
 endif
 

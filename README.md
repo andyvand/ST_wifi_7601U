@@ -13,4 +13,7 @@ ST平台上的wifi移植（7601U模块）
 
 开启分支develop为开发版本，master为稳定版本
 
+[fix_scan]
+发现sudo iwlist scan 扫描不到到网络信息的bug开启分支
 
+硬件问题，去掉2个压频电阻后一切恢复正常，能ping通百度。准备合并.

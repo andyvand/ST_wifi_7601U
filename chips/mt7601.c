@@ -950,7 +950,7 @@ VOID MT7601_INIT_CAL(RTMP_ADAPTER *pAd)
 	AndesCalibrationOP(pAd, ANDES_CALIBRATION_TXIQ, 0);
 
 	/* RXIQ */
-	AndesCalibrationOP(pAd, ANDES_CALIBRATION_RXIQ, 0);
+//	AndesCalibrationOP(pAd, ANDES_CALIBRATION_RXIQ, 0);/*housir: 调试iwlist wlan0 scan错误输出， RTUSB_VendorRequest failed(-110) 而屏蔽*/
 
 #ifdef DPD_CALIBRATION_SUPPORT
 	/* DPD-Calibration */

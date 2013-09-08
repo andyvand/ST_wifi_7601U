@@ -21,8 +21,8 @@ makelog
 bin2h
 #log
 ################
-*.log
-log*
+#*.log
+#log*
 
 #####tags cscope
 #######

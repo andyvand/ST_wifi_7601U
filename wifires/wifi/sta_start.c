@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
 		free(scan_ap_info);
 		return -CHKSTATUSFAIL;	
 	}
-	
+#if 0	
 	err = HI_Sta_Ioctl(&link_info, DISCONNECT);
 	if (-1 == err) {
 		printf("disconnect failed!\n");
@@ -124,7 +124,7 @@ int main(int argc, char *argv[])
 		free(scan_ap_info);
 		return -RESTARTFAIL;
 	}	
-
+#endif
 	free(scan_ap_info);
 	return 0;
 } 

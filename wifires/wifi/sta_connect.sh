@@ -173,3 +173,4 @@ echo "=========================================================="
 
 wpa_supplicant_start
 wifi_sta_connect
+dhclient $WLAN

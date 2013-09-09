@@ -9853,15 +9853,27 @@ INT RTMP_STA_IoctlHandle(
 			break;
 
 		case CMD_RTPRIV_IOCTL_MAC:
+#ifdef DBG
 			RTMPIoctlMAC(pAd, pRequest);
-			break;
+#else
+	 	    DBGPRINT(RT_DEBUG_TRACE, ("===>RTMP_STA_IoctlHandle::  Not Support DBG Command CMD_RTPRIV_IOCTL_MAC \n"));/*housir:  */
+#endif
+            break;
 
 		case CMD_RTPRIV_IOCTL_E2P:
+#ifdef DBG
 			RTMPIoctlE2PROM(pAd, pRequest);
+#else
+	 	    DBGPRINT(RT_DEBUG_TRACE, ("===>RTMP_STA_IoctlHandle::  Not Support DBG Command CMD_RTPRIV_IOCTL_E2P \n"));/*housir:  */
+#endif
 			break;
 
 		case CMD_RTPRIV_IOCTL_RF:
+#ifdef DBG
 			RTMPIoctlRF(pAd, pRequest);
+#else
+	 	    DBGPRINT(RT_DEBUG_TRACE, ("===>RTMP_STA_IoctlHandle::  Not Support DBG Command CMD_RTPRIV_IOCTL_RF \n"));/*housir:  */
+#endif
 			break;
 
 		case CMD_RTPRIV_IOCTL_BBP:

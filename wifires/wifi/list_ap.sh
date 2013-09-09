@@ -20,7 +20,7 @@ load_drv ()
 	local driver_path="/sbin"
 	local drv_flag="" 
     
-    echo ">>>>>>load_drv"
+    echo "--->load_drv"
 
 	case ${ic_device} in
 	7601)
@@ -28,6 +28,7 @@ load_drv ()
 		driver_cmd="wifi_drv_load.usb_rt${ic_device}sta"
 		if [ -e "$driver_path/$driver_cmd" ]
 		then
+            echo "$driver_path/$driver_cmd exist!" 
 			drv_flag=`lsmod | grep "mt7601Usta"`
 			if [ -z "$drv_flag" ]; then
 				"$driver_path/$driver_cmd" > /dev/null
@@ -46,7 +47,7 @@ load_drv ()
 ###############################################################################
 dev_find ()
 {
-echo ">>>>>>dev_find"
+echo "--->dev_find"
 	local obj=""
 	local str=""
 	local num1=""
@@ -94,13 +95,13 @@ echo ">>>>>>dev_find"
 		echo "no supported device found."
 		exit
 	fi
-echo "<<<<<<devfind"
+echo "<---devfind"
 	
 }
 ###############################################################################
 device_action ()
 {
-echo ">>>>>>dev_action"
+echo "--->dev_action"
 	local i=1
 	local tmp=0
 	local total=1
@@ -131,9 +132,11 @@ echo ">>>>>>dev_action"
 	target=${MSG:$(($tmp-28)):32}
 	target=$(echo $target | awk -F":" '{print $3}' | awk '{print $1}')
 
+    echo  "$target <> $DEVICE"
 	for obj in ${DEVICE}
 	do
 		if [ "$target" = $obj ]; then
+            echo "obj"
 			load_drv "$target" 
 		fi
 	done

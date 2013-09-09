@@ -401,7 +401,7 @@ endif #// endif of RT2860_MODE == AP //
 
 ifeq ($(RT28xx_MODE),STA)
 WFLAGS += -DCONFIG_STA_SUPPORT -DSCAN_SUPPORT \
--DDBG
+#-DDBG
 
 ifeq ($(HAS_XLINK),y)
 WFLAGS += -DXLINK_SUPPORT

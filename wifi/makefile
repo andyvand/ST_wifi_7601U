@@ -12,10 +12,14 @@ lib:
 main.o:
 	$(CC) -c sta_start.c -o main.o
 
-test_st_api:
+%.o :
 	$(CC) -c ../interface/st_sta_inf/*.c
+
+
+test_st_api:sta_inf.o st_sta_interface.o test_st_api.o
+#	$(CC) -c ../interface/st_sta_inf/*.c
 	$(CC) -c test_st_api.c -o test_st_api.o
 	$(CC)  sta_inf.o st_sta_interface.o test_st_api.o -o test_st_api
 
 clean:
-	rm *.o
+	rm *.o ;rm test_st_api

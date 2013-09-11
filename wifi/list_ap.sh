@@ -301,7 +301,7 @@ device_status ()
 ###############################################################################
 getmsg ()
 {
-echo ">>>>>>getmsg"
+echo "--->getmsg"
 	local i
 	local tmp
 	local msg
@@ -476,7 +476,7 @@ do_help ()
 	exit 0
 }
 
-echo ">>>>>>main"
+echo "----->main"
 
 if [ $# != 2 -a $# != 3 ]; then
 	do_help
@@ -486,7 +486,7 @@ if [ ! -d "$RESULT_PATH" ];then
 	mkdir $RESULT_PATH
 fi
 
-device_action
+#device_action
 if [ $# = 2 ]; then
 	if [ "$1" = "-p" -o "$1" = "-l" ]; then
 		if getmsg $1 $2; then

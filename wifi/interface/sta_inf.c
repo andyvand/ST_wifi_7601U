@@ -116,7 +116,6 @@ void extract_ap_info(char *src, char sym, char *ss[])
 void store_info(OUT struct wifi_info *dev_info, IN char *src[], char *line_index[])
 {
     printf("--->[%s]\n", __func__);
-    printf("%x\n", line_index[1]);
 	if (dev_info == NULL)
 		return;
 
@@ -124,19 +123,12 @@ void store_info(OUT struct wifi_info *dev_info, IN char *src[], char *line_index
 	   || src[2] == NULL || src[3] == NULL || src[4] == NULL)
 		return;
 
-    printf("%x\n", line_index[1]);
 	memset(dev_info, 0, sizeof(struct wifi_info));
-    printf("%x\n", line_index[1]);
 	strcpy(dev_info->ssid, src[0]);
-    printf("%x\n", line_index[1]);
 	strcpy(dev_info->channel, src[1]);
-    printf("%0x\n", line_index[1]);
 	strcpy(dev_info->signal, src[2]);
-    printf("%0x\n", line_index[1]);
 	strcpy(dev_info->encrypt, src[3]);
-    printf("%0x\n", line_index[1]);
 	strcpy(dev_info->security, src[4]);
-    printf("%0x\n", line_index[1]);
     printf("<---[%s]\n", __func__);
 } 
 
@@ -154,7 +146,7 @@ int connect_ap(const struct sta_link_info *const link_info)
 	int err = 0;
 	int status = 0;
 	char *spawn_env[] = {NULL};
-	char *spawn_args[] = {"sta_connect.sh", link_info->interface, 
+	char *spawn_args[] = {"./sta_connect.sh", link_info->interface, 
 		link_info->ssid, link_info->security, link_info->password, NULL};
 
 	err = posix_spawnp(&pid, spawn_args[0], NULL, NULL,
@@ -187,7 +179,7 @@ int sta_ioctl(const struct sta_link_info *const link_info,const int cmd)
 	int status = 0;
 	int exit_flag = 0;
 	char *spawn_env[] = {NULL};
-	char *spawn_args[] = {"list_ap.sh", NULL, 
+	char *spawn_args[] = {"./list_ap.sh", NULL, 
 			link_info->interface, NULL};
 	
 	switch (cmd) {
@@ -251,7 +243,7 @@ int get_security(INOUT struct sta_link_info *link_info)
 	int status = 0;
 	int  exit_flag = 0;
 	char *spawn_env[] = {NULL};
-	char *spawn_args[] = {"list_ap.sh", "-s", 
+	char *spawn_args[] = {"./list_ap.sh", "-s", 
 		link_info->interface, link_info->ssid, NULL};
 
 	err = posix_spawnp(&pid, spawn_args[0], NULL, NULL, 
@@ -373,9 +365,7 @@ int get_ap_raw_info(IN struct wifi_info **ap_list,
 	for (count = 0; count < all_ap; count++) {
         printf("[AP num:][%d]\n", count);
 
-//        printf("[line_index:][%s]\n", &line_index[count][1]);
 		extract_ap_info(line_index[count], ' ' , space_index); 
-//        printf("[line_index:][%s]\n", line_index[1]);
 
 //		store_info(&(*ap_list)[count], space_index, line_index);
 		store_info(&ap_list[0][count], space_index, line_index);/*housir: 两句是等价的 */

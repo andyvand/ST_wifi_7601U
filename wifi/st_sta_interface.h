@@ -75,7 +75,7 @@ struct wifi_info {
  *
  * @return 
  */
-int HI_Sta_Ioctl(struct sta_link_info *const link_info, const int cmd);
+int ST_Sta_Ioctl(struct sta_link_info *const link_info, const int cmd);
 /**
  * @brief ST_GetAPinf2File 将搜索到的AP信息存入/dev/wifi/list_ap文件，若未搜索到则将no ap found 写入
  *

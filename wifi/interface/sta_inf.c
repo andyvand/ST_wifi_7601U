@@ -60,14 +60,17 @@
  */
 void extract_info(char *src, char sym, char *ss[])
 {
-    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
+    printf("--->[%s]\n", __func__);
+    printf("[buf][%s]\n", src);
 	*ss++ = src--;
 	while (*++src) {
 		if (*src == sym) {
 			*src++ = '\0';
 			*ss++ = src;
+            printf("[buf][%s]\n", src);
 		}
 	}
+    printf("<---[%s]\n", __func__);
 }
 
 /*****************************************************************************/
@@ -79,12 +82,20 @@ void extract_info(char *src, char sym, char *ss[])
  */
 void extract_ap_info(char *src, char sym, char *ss[])
 {
-    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
+    printf("--->[%s]\n", __func__);
+//    printf("src[%s]sym[%c]ss[]\n", src, sym);
 	char *p;
+    int i;
 
-	p = strrchr(src, '"');
+//    for ( i=0 ;NULL != ss[i];i++)
+//        printf("ss[%d]:[%s]\n", i, ss[i]);
+
+	p = strrchr(src, '"');/*housir: find " */
+//    printf("[p][%s]\n", p);
 	if (p == NULL)
 		return;
+
+//    printf("[src+1][%s]\n", &src+4);
 
 	*ss++ = src--;
 	while (*++p) {
@@ -93,6 +104,7 @@ void extract_ap_info(char *src, char sym, char *ss[])
 			*ss++ = p;
 		}
 	}
+    printf("<---[%s]\n", __func__);
 }
 
 /*****************************************************************************/
@@ -101,9 +113,10 @@ void extract_ap_info(char *src, char sym, char *ss[])
  * @dev_info: the specific info of eace ap
  * @src: the raw source info that were scan
  */
-void store_info(OUT struct wifi_info *dev_info, IN char *src[])
+void store_info(OUT struct wifi_info *dev_info, IN char *src[], char *line_index[])
 {
-    printf(">>>>>>>>>>>>>>[%s]\n", __func__);
+    printf("--->[%s]\n", __func__);
+    printf("%x\n", line_index[1]);
 	if (dev_info == NULL)
 		return;
 
@@ -111,12 +124,20 @@ void store_info(OUT struct wifi_info *dev_info, IN char *src[])
 	   || src[2] == NULL || src[3] == NULL || src[4] == NULL)
 		return;
 
+    printf("%x\n", line_index[1]);
 	memset(dev_info, 0, sizeof(struct wifi_info));
+    printf("%x\n", line_index[1]);
 	strcpy(dev_info->ssid, src[0]);
+    printf("%x\n", line_index[1]);
 	strcpy(dev_info->channel, src[1]);
+    printf("%0x\n", line_index[1]);
 	strcpy(dev_info->signal, src[2]);
+    printf("%0x\n", line_index[1]);
 	strcpy(dev_info->encrypt, src[3]);
+    printf("%0x\n", line_index[1]);
 	strcpy(dev_info->security, src[4]);
+    printf("%0x\n", line_index[1]);
+    printf("<---[%s]\n", __func__);
 } 
 
 /*****************************************************************************/
@@ -343,18 +364,27 @@ int get_ap_raw_info(IN struct wifi_info **ap_list,
 	}
 	
 	int count;
-	char **line_index;
+	char **line_index;/*housir: 每个ap的信息的开始 */
 	char *space_index[MAX_PART + 1] = {NULL};
 	line_index = (char **)malloc(sizeof(char *) * (all_ap + 1));
-	extract_info(buf, '\n', line_index);
+//    printf("[buf:][%s]\n", buf);
+	extract_info(buf, '\n', line_index);/*housir: line_index全部指向每个SSID处 */
+//    printf("[line_index:][%s]\n", line_index[1]);
 	for (count = 0; count < all_ap; count++) {
-		extract_ap_info(line_index[count], ' ' , space_index); 
+        printf("[AP num:][%d]\n", count);
 
-		store_info(&(*ap_list)[count], space_index);
+//        printf("[line_index:][%s]\n", &line_index[count][1]);
+		extract_ap_info(line_index[count], ' ' , space_index); 
+//        printf("[line_index:][%s]\n", line_index[1]);
+
+//		store_info(&(*ap_list)[count], space_index, line_index);
+		store_info(&ap_list[0][count], space_index, line_index);/*housir: 两句是等价的 */
 	}
 
 	free(line_index);
 	free(buf);
+
+    printf("<---[%s]\n", __func__);
 
 	return 0;
 }
@@ -381,7 +411,7 @@ int scan_for_ap(OUT int *ap_cnt, IN char *interface)
 	int len = 0;
 	char *buf;
 	char *spawn_env[] = {NULL};
-	char *spawn_args[] = {"list_ap.sh", "-l", interface, NULL};
+	char *spawn_args[] = {"./list_ap.sh", "-l", interface, NULL};
 	FILE *fp = NULL;
 
 	
@@ -394,11 +424,11 @@ int scan_for_ap(OUT int *ap_cnt, IN char *interface)
 
 	err = waitpid(pid, &status, 0);
 	if (-1 == err) {
-		perror("waitpid");
+		perror("waitpid\n");
 		return -1;
 	}
 
-	fp = fopen("/dev/wifi/list_ap","r");/*housir: need to modify */
+	fp = fopen("/dev/wifi/list_ap","r");
 	if(fp == NULL)
 	{
 		FPRINTF_CA(stderr, "cant find file /dev/wifi/list_ap\n");
@@ -446,6 +476,9 @@ int scan_for_ap(OUT int *ap_cnt, IN char *interface)
 		*ap_cnt = all_ap;
 	} 
 	free(buf);
+
+    printf("<---[%s]\n", __func__);
+
 	return 0;
 }
 

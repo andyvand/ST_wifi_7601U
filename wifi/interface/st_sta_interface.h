@@ -96,13 +96,11 @@ int ST_GetAPinf2File(int *ap_cnt, char * interface);
  */
 int ST_Get_Ap_Raw_FromFile(struct wifi_info **ap_list, int *ap_cnt, char * interface);
 
-#ifdef DBUG_WIFI
 /*
  * ST_Show_List
  * @total: how many ap we scan
  * @list: the specific info of each ap 很多AP点
  */
 void ST_Show_List(int total, struct wifi_info *list);
-#endif
 
 #endif /* __ST_STA_INTERFACE_H__  */

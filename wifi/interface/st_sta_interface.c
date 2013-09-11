@@ -29,7 +29,7 @@
 #include <bits/posix1_lim.h>
 
 #include "st_sta_interface.h"
-
+#define DBUG_WIFI
 /*****************************************************************************/
 extern int sta_ioctl(const struct sta_link_info *const link_info, const int cmd);
 extern int get_security(INOUT struct sta_link_info *link_info);
@@ -81,7 +81,6 @@ int ST_Sta_Ioctl(struct sta_link_info *const link_info, const int cmd)
  */
 int ST_GetAPinf2File(int *ap_cnt, char * interface)
 {
-//    strncpy(interface, "wlan0", 6);
 
 	return scan_for_ap(ap_cnt, interface);
 }
@@ -100,7 +99,6 @@ int ST_Get_Ap_Raw_FromFile(struct wifi_info **ap_list, int *ap_cnt, char * inter
 }
 
 
-#ifdef DBUG_WIFI
 /*
  * ST_Show_List
  * @total: how many ap we scan
@@ -111,4 +109,3 @@ void ST_Show_List(int total, struct wifi_info *list)
 	show_list(total, list);
 }
 
-#endif

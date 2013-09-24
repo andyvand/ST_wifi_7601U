@@ -34,6 +34,7 @@
 #include "st_sta_interface.h"
 
 #define MAX_PART	5     /** the max number of paramter of scan results*/
+#define PRINTF_CA_FLAG 1
 
 /*****************************************************************************/
 
@@ -51,6 +52,101 @@
 #endif
 #endif
 
+
+int get_security(INOUT struct sta_link_info *link_info);
+/**
+ * @brief 设置ip等参数
+ *
+ * @param getip_way  ANTO or MANUAL
+ * @param getdns_way  ANTO or MANUAL
+ * @param ips_info
+ * @param interface  wlan0 or other
+ *
+ * @return 
+ */
+int apply_for_ips(unsigned char getip_way, unsigned char getdns_way, IN struct wifi_ips_info *ips_info, IN char *interface)
+{
+    pid_t pid = 0;
+    int err=0;
+    int status=0;
+    int exit_flag=0;
+
+    if (ANTO == getip_way)
+    {
+        if ((pid = vfork()) == 0)
+        {
+            if ( (err = execlp("dhclient", "dhclient", interface, NULL)) <0)
+                FPRINTF_CA(stderr, "execlp() error=%d\n", err);
+    
+        }
+    }
+    else    /*housir:  下面为手动*/
+    {
+        pid_t pid_setip = 0;
+
+        if ((pid_setip = vfork()) == 0)
+        {
+            if ( (err = execlp("ifconfig", "ifconfig", interface, ips_info->ipaddress, "netmask", ips_info->netmask, NULL)) <0)
+                FPRINTF_CA(stderr, "execlp() error=%d\n", err);
+        }
+
+        err = waitpid(pid_setip, &status, 0);
+
+        printf("waitpid_setip ==> %d \n", status);
+        if (-1 == err) {
+            perror("waitpid\n");
+            return -1;
+        }
+        exit_flag = WEXITSTATUS(status);
+        printf("exit_flag ===> %d\n", exit_flag);
+
+        pid_t pid_set_gateway = 0;
+        if ( (pid_set_gateway = vfork()) == 0)
+        {
+#if 0
+            if ( (err = execlp ("route", "route", "add", "default", "gw", ips_info->gateway, NULL)) < 0)
+                FPRINTF_CA(stderr, "execlp() error=%d\n", err);
+#endif
+            exit(0);
+//            return 0;
+        }
+
+        err = waitpid(pid_set_gateway, &status, 0);
+
+        printf("waitpid _setgateway ==> %d \n", status);
+        if (-1 == err) {
+            perror("waitpid\n");
+            return -1;
+        }
+        exit_flag = WEXITSTATUS(status);
+        printf("exit_flag ===> %d\n", exit_flag);
+
+    }/*housir:  手动设置ip等结束*/
+
+    if (MANUAL == getdns_way)
+    {
+        pid_t pid_set_dns;
+        if ( (pid_set_dns = vfork()) == 0)
+        {
+            if ( (err = execlp("echo ", "echo", "nameserver",  ips_info->dns, ">>", "/etc/resolv.conf", NULL)) < 0 )
+                FPRINTF_CA(stderr, "execlp() error=%d\n", err);
+        }
+
+        err = waitpid(pid_set_dns, &status, 0);
+
+        printf("waitpid_setdns ==> %d \n", status);
+        if (-1 == err) {
+            perror("waitpid\n");
+            return -1;
+        }
+        exit_flag = WEXITSTATUS(status);
+        printf("exit_flag ===> %d\n", exit_flag);
+    }
+    printf("===> set ips over\n");
+
+
+    return 0;
+}
 /*****************************************************************************/
 /*
  * extract_info - divide info 
@@ -60,17 +156,14 @@
  */
 void extract_info(char *src, char sym, char *ss[])
 {
-    printf("--->[%s]\n", __func__);
-    printf("[buf][%s]\n", src);
+//    printf("--->[%s]\n", __func__);
 	*ss++ = src--;
 	while (*++src) {
 		if (*src == sym) {
 			*src++ = '\0';
 			*ss++ = src;
-            printf("[buf][%s]\n", src);
 		}
 	}
-    printf("<---[%s]\n", __func__);
 }
 
 /*****************************************************************************/
@@ -83,19 +176,11 @@ void extract_info(char *src, char sym, char *ss[])
 void extract_ap_info(char *src, char sym, char *ss[])
 {
     printf("--->[%s]\n", __func__);
-//    printf("src[%s]sym[%c]ss[]\n", src, sym);
 	char *p;
-    int i;
 
-//    for ( i=0 ;NULL != ss[i];i++)
-//        printf("ss[%d]:[%s]\n", i, ss[i]);
-
-	p = strrchr(src, '"');/*housir: find " */
-//    printf("[p][%s]\n", p);
+	p = strrchr(src, '"');
 	if (p == NULL)
 		return;
-
-//    printf("[src+1][%s]\n", &src+4);
 
 	*ss++ = src--;
 	while (*++p) {
@@ -104,7 +189,6 @@ void extract_ap_info(char *src, char sym, char *ss[])
 			*ss++ = p;
 		}
 	}
-    printf("<---[%s]\n", __func__);
 }
 
 /*****************************************************************************/
@@ -113,9 +197,10 @@ void extract_ap_info(char *src, char sym, char *ss[])
  * @dev_info: the specific info of eace ap
  * @src: the raw source info that were scan
  */
-void store_info(OUT struct wifi_info *dev_info, IN char *src[], char *line_index[])
+void store_info(OUT struct wifi_info *dev_info, IN char *src[])
 {
-    printf("--->[%s]\n", __func__);
+    int len ;
+//    printf("---> [%s]\n", __func__);
 	if (dev_info == NULL)
 		return;
 
@@ -127,9 +212,21 @@ void store_info(OUT struct wifi_info *dev_info, IN char *src[], char *line_index
 	strcpy(dev_info->ssid, src[0]);
 	strcpy(dev_info->channel, src[1]);
 	strcpy(dev_info->signal, src[2]);
+    if (dev_info->signal[1] == '/')/* 将5/100 转换成 05/100模式，方便中间件使用快排函数排序输出,100/100模式中间件另有处理*/
+    {
+        printf("dev_info->signal ==> %s \n", dev_info->signal);
+        len = strlen(dev_info->signal);
+        while (0 != len)
+        {
+            dev_info->signal[len+1] = dev_info->signal[len];
+            len--;
+        }
+        dev_info->signal[0] = '0';
+    }
 	strcpy(dev_info->encrypt, src[3]);
 	strcpy(dev_info->security, src[4]);
-    printf("<---[%s]\n", __func__);
+
+//    printf("<--- [%s]\n", __func__);
 } 
 
 /*****************************************************************************/
@@ -160,6 +257,7 @@ int connect_ap(const struct sta_link_info *const link_info)
 		perror("waitpid");
 		return -1;
 	}
+    printf("<---[%s]\n", __func__);
 	return 0;
 }
 
@@ -171,7 +269,7 @@ int connect_ap(const struct sta_link_info *const link_info)
  * Returns: 0 if cmd succeed, -1 if cmd fail
  */
 
-int sta_ioctl(const struct sta_link_info *const link_info,const int cmd)
+int sta_ioctl( struct sta_link_info * link_info,const int cmd)
 {
     printf("--->[%s]\n", __func__);
 	int err = 0;
@@ -185,6 +283,12 @@ int sta_ioctl(const struct sta_link_info *const link_info,const int cmd)
 	switch (cmd) {
 		case CONNECT:
 		case RESTART:
+            get_security(link_info);
+            if (!strncmp(link_info->security, "NULL", 4)) 
+            {
+                printf("No match ssid!!!!!!!!!!!!\n");
+                return -2;
+            }
 			err = connect_ap(link_info);
 			break;
 		case CHKSTATUS:
@@ -196,6 +300,9 @@ int sta_ioctl(const struct sta_link_info *const link_info,const int cmd)
 		case RECONNECT:
 			spawn_args[1] = "-r";
 			break;
+        case CLOSE:
+            spawn_args[1] = "-close";
+            break;
 		default:
 			break;
 	}
@@ -223,9 +330,17 @@ int sta_ioctl(const struct sta_link_info *const link_info,const int cmd)
 	if (!strcmp(spawn_args[1], "-c")) {
 		exit_flag = WEXITSTATUS(status);
 		if (8 == exit_flag)
-			return -1;
+			return 8;
+	}
+    else if (!strcmp(spawn_args[1], "-close")) 
+    {
+		exit_flag = WEXITSTATUS(status);
+		if (3 == exit_flag)
+			return 3;
 	}
 
+
+    printf("<---[%s]\n", __func__);
 	return 0;
 }
 
@@ -276,6 +391,7 @@ int get_security(INOUT struct sta_link_info *link_info)
 		default:
 			break;
 	}
+    printf("<---[%s]\n", __func__);
 	return 0;
 }
 
@@ -356,25 +472,18 @@ int get_ap_raw_info(IN struct wifi_info **ap_list,
 	}
 	
 	int count;
-	char **line_index;/*housir: 每个ap的信息的开始 */
+	char **line_index;
 	char *space_index[MAX_PART + 1] = {NULL};
 	line_index = (char **)malloc(sizeof(char *) * (all_ap + 1));
-//    printf("[buf:][%s]\n", buf);
-	extract_info(buf, '\n', line_index);/*housir: line_index全部指向每个SSID处 */
-//    printf("[line_index:][%s]\n", line_index[1]);
+	extract_info(buf, '\n', line_index);
 	for (count = 0; count < all_ap; count++) {
-        printf("[AP num:][%d]\n", count);
-
 		extract_ap_info(line_index[count], ' ' , space_index); 
 
-//		store_info(&(*ap_list)[count], space_index, line_index);
-		store_info(&ap_list[0][count], space_index, line_index);/*housir: 两句是等价的 */
+		store_info(&(*ap_list)[count], space_index);
 	}
 
 	free(line_index);
 	free(buf);
-
-    printf("<---[%s]\n", __func__);
 
 	return 0;
 }
@@ -413,12 +522,13 @@ int scan_for_ap(OUT int *ap_cnt, IN char *interface)
 	}
 
 	err = waitpid(pid, &status, 0);
+    printf("waitpid ==> %d \n", status);
 	if (-1 == err) {
 		perror("waitpid\n");
 		return -1;
 	}
 
-	fp = fopen("/dev/wifi/list_ap","r");
+	fp = fopen("/dev/wifi/list_ap","r");/*housir: need to modify */
 	if(fp == NULL)
 	{
 		FPRINTF_CA(stderr, "cant find file /dev/wifi/list_ap\n");
@@ -468,7 +578,6 @@ int scan_for_ap(OUT int *ap_cnt, IN char *interface)
 	free(buf);
 
     printf("<---[%s]\n", __func__);
-
 	return 0;
 }
 

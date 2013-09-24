@@ -4,7 +4,9 @@
  *       Filename:  st_sta_interface.h
  *
  *    Description:  st-wifi 接口文件，芯片为mt7601U,
- *         Others:  调用之前确保/dev/wifi文件夹存在，wpa已移植，否            则只能连接上wpe网络
+ *         Others:  调用之前确保/dev/wifi文件夹存在，wpa已移植，否则只能连接上wpe网络
+ *         连接步骤，IOctrl + Netset 否则连接上后，不能获取到ip
+ *         
  *
  *        Version:  1.0
  *        Date:  Monday, September 09, 2013 02:08:44 HKT
@@ -39,6 +41,13 @@
 #define DISCONNECT	2       /** disconnect to AP*/
 #define RECONNECT	3       /** reconnect to AP*/
 #define RESTART		4       /** restart wifi sta, connect to a AP*/
+#define CLOSE       5            /* down wlan */
+
+/*retuen code  */
+#define CONNECTED            0/*  */
+#define DISCONNECTED         8/*  */
+
+#define CLOSE_FAILED         3   /*  */
 
 /** Error code */
 #define NOSUCHINF	2       /** cann't find wlan network interface*/
@@ -50,7 +59,8 @@
 #define DISCONFAIL	8       /** fail to disconnect to AP*/
 #define RECONFAIL	9       /** fail to reconnect to the AP*/
 #define RESTARTFAIL	10      /** fail to restart wifi and connect to the AP*/
-
+#define ANTO    0            /* anto get ip or dns */
+#define MANUAL  1            /*  manual get ip or dns */
 /** configure information of AP connected or wanted to connect to */
 struct sta_link_info {
 	char interface[8];        /**< network interface, such as "wlan0" "ra0" */
@@ -67,6 +77,25 @@ struct wifi_info {
 	char encrypt[4];      /**< if AP uses WEP or WPA, this value is "on", else "off" */
 	char security[8];     /**< security mode, such as "NONE", "WEP", "WPAPSK" */
 };
+/*housir: 设置ip dns等信息*/
+struct wifi_ips_info {
+    char ipaddress[16];  /*192.168.0.1 or other */ 
+    char netmask[16];
+    char gateway[16];
+    char dns[16];
+};
+
+/**
+ * @brief 设置网络IP等相关信息
+ *
+ * @param getip_way  ANTO or MANUAL
+ * @param getdns_way
+ * @param ips_info 
+ * @param interface eth0 or  wlan0 or other
+ *
+ * @return 0 success or -1 fail
+ */
+int ST_Sta_NetSet(unsigned char getip_way, unsigned char getdns_way, IN struct wifi_ips_info *ips_info, IN char *interface);
 /**
  * @brief 
  *
@@ -75,7 +104,7 @@ struct wifi_info {
  *
  * @return 
  */
-int ST_Sta_Ioctl(struct sta_link_info *const link_info, const int cmd);
+int ST_Sta_Ioctl(struct sta_link_info * link_info, const int cmd);
 /**
  * @brief ST_GetAPinf2File 将搜索到的AP信息存入/dev/wifi/list_ap文件，若未搜索到则将no ap found 写入
  *
@@ -99,7 +128,7 @@ int ST_Get_Ap_Raw_FromFile(struct wifi_info **ap_list, int *ap_cnt, char * inter
 /*
  * ST_Show_List
  * @total: how many ap we scan
- * @list: the specific info of each ap 很多AP点
+ * @list: the specific info of each ap 
  */
 void ST_Show_List(int total, struct wifi_info *list);
 

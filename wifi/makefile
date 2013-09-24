@@ -13,7 +13,7 @@ main.o:
 	$(CC) -c sta_start.c -o main.o
 
 %.o :
-	$(CC) -c ../interface/st_sta_inf/*.c
+	$(CC) -c ./interface/*.c
 
 
 test_st_api:sta_inf.o st_sta_interface.o test_st_api.o

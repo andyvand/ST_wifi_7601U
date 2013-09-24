@@ -29,7 +29,7 @@
 #include <bits/posix1_lim.h>
 
 #include "st_sta_interface.h"
-#define DBUG_WIFI
+
 /*****************************************************************************/
 extern int sta_ioctl(const struct sta_link_info *const link_info, const int cmd);
 extern int get_security(INOUT struct sta_link_info *link_info);
@@ -41,17 +41,36 @@ extern void show_list(IN int total, IN struct wifi_info *list);
 extern int get_ap_count(OUT int *ap_count, IN char *interface);
 extern int get_key_info(IN struct wifi_info **wifi_list, IN char *interface);
 extern int scan_for_ap(OUT int *ap_cnt, IN char *interface);
-
+extern int apply_for_ips(unsigned char getip_way, unsigned char getdns_way, IN struct wifi_ips_info *ips_info, IN char *interface);
 
 /**
- * @brief ST_Sta_Ioctl - to control wifi 运行之前确保link_info结构已从UI中获取补全.
+ * @brief 设置网络ip等相关信息
  *
+ * @param getip_way
+ * @param getdns_way
+ * @param ips_info
+ * @param interface
+ *
+ * @return 0 or -1
+ */
+int ST_Sta_NetSet(unsigned char getip_way, unsigned char getdns_way, IN struct wifi_ips_info *ips_info, IN char *interface)
+{
+    return apply_for_ips(getip_way, getdns_way, ips_info, interface);
+}
+/**
+ * @brief ST_Sta_Ioctl - to control wifi 运行之前确保link_info结构已从UI中获取补全.
+ * 
  * @param link_info  key info to associate ap
  * @param cmd  action for sta
+ * CONNECT: 
+ * CHKSTATUS: 未连接返回8，连接返回0.
+ * DISCONNECT:
+ * RECONNECT:
  *
  * @return  0 if cmd succeed, -1 if cmd fail
+ * 
  */
-int ST_Sta_Ioctl(struct sta_link_info *const link_info, const int cmd)
+int ST_Sta_Ioctl(struct sta_link_info * link_info, const int cmd)
 {
 //    strncpy(link_info->interface, "wlan0", 6);
 #if 0
@@ -81,6 +100,7 @@ int ST_Sta_Ioctl(struct sta_link_info *const link_info, const int cmd)
  */
 int ST_GetAPinf2File(int *ap_cnt, char * interface)
 {
+//    strncpy(interface, "wlan0", 6);
 
 	return scan_for_ap(ap_cnt, interface);
 }

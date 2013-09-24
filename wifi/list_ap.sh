@@ -20,15 +20,14 @@ load_drv ()
 	local driver_path="/sbin"
 	local drv_flag="" 
     
-    echo "--->load_drv"
+    echo ">>>>>>load_drv"
 
 	case ${ic_device} in
 	7601)
-		interface=wlan1
+		interface=wlan0
 		driver_cmd="wifi_drv_load.usb_rt${ic_device}sta"
 		if [ -e "$driver_path/$driver_cmd" ]
 		then
-            echo "$driver_path/$driver_cmd exist!" 
 			drv_flag=`lsmod | grep "mt7601Usta"`
 			if [ -z "$drv_flag" ]; then
 				"$driver_path/$driver_cmd" > /dev/null
@@ -47,7 +46,7 @@ load_drv ()
 ###############################################################################
 dev_find ()
 {
-echo "--->dev_find"
+echo ">>>>>>dev_find"
 	local obj=""
 	local str=""
 	local num1=""
@@ -95,13 +94,13 @@ echo "--->dev_find"
 		echo "no supported device found."
 		exit
 	fi
-echo "<---devfind"
+echo "<<<<<<devfind"
 	
 }
 ###############################################################################
 device_action ()
 {
-echo "--->dev_action"
+echo ">>>>>>dev_action"
 	local i=1
 	local tmp=0
 	local total=1
@@ -132,11 +131,9 @@ echo "--->dev_action"
 	target=${MSG:$(($tmp-28)):32}
 	target=$(echo $target | awk -F":" '{print $3}' | awk '{print $1}')
 
-    echo  "$target <> $DEVICE"
 	for obj in ${DEVICE}
 	do
 		if [ "$target" = $obj ]; then
-            echo "obj"
 			load_drv "$target" 
 		fi
 	done
@@ -168,11 +165,11 @@ print_line ()
 ###############################################################################
 format_out ()
 {
-	print_line $LINE
+	print_line $LINE 
 	align_print ESSID 133;align_print CHANNEL 13;align_print SIGNAL 10
 		align_print ENCRYPT 10;align_print SECURITY 10
 	echo;
-	print_line $LINE
+	print_line $LINE 
 }
 ###############################################################################
 catch_info_p ()
@@ -204,7 +201,7 @@ catch_info_p ()
 
 	align_print "$ssid" 133;align_print $channel 10;align_print $signal 12
 		align_print $encrypt 9;align_print $security 10
-	echo 
+	echo  
 }
 ###############################################################################
 catch_info_l ()
@@ -221,7 +218,7 @@ catch_info_l ()
 	ssid=$(echo $ssid | sed 's/ Protocol:.*$//')
 	channel="$(echo $1 | sed 's/.*Frequency://' | awk '{print $4}')"
 	channel=${channel:0:$((${#channel}-1))}
-	signal=$(echo $1 | sed 's/.*Signal level=//' | awk '{print $1}')
+	signal=$(echo $1 | sed 's/.*Quality=//' | awk '{print $1}')
 	encrypt=$(echo $1 | sed 's/.*Encryption//' | awk -F":" '{print $2}' | \
 		awk '{print $1}')
 	security=$(echo $1 | grep "WPA") || $(echo $1 | grep "WPA2")
@@ -301,7 +298,7 @@ device_status ()
 ###############################################################################
 getmsg ()
 {
-echo "--->getmsg"
+echo "--->getmsg" 
 	local i
 	local tmp
 	local msg
@@ -370,6 +367,8 @@ echo "--->getmsg"
 		print_line $LINE
 	fi
 
+echo "<--- getmsg" 
+
 	return 0
 }
 
@@ -401,7 +400,7 @@ disconnect ()
 	local interface=""
 
 	interface="$1"
-	echo -ne "disconnect "	
+	echo -ne "disconnect "	 
 	while [ "$flag" -eq 0 ]
 	do
 		wpa_cli -i${interface} disconnect > /dev/null
@@ -419,11 +418,11 @@ disconnect ()
 		fi
 
 		time=$(($time-1))
-		echo -ne "."
+		echo -ne "." 
 	done
 		
-	echo -ne " - "
-	echo "$state"
+	echo -ne " - " 
+	echo "$state" 
 }
 
 reconnect ()
@@ -434,7 +433,7 @@ reconnect ()
 	local interface=""
 	
 	interface="$1"
-	echo -ne "reconnect "
+	echo -ne "reconnect " 
 	while [ "$state" != "COMPLETED" ]
 	do
 		wpa_cli -i${interface} reassociate > /dev/null	
@@ -452,31 +451,47 @@ reconnect ()
 		fi
 
 		time=$(($time-1))
-		echo -ne "."
+		echo -ne "." 
 	done
 	
-	echo -ne " - "
-	echo "$state"
+	echo -ne " - " 
+	echo "$state" 
+}
+
+close ()
+{
+	echo "---->close"
+	local msg=""
+	local interface=""
+	interface="$1"
+	`ifconfig ${interface} down` 
+	if [ $? -eq 0 ];then
+		echo "close ${interface} successed"
+		exit 0	
+	else 
+		echo "close ${interface} failed"
+		exit 3
+	fi
 }
 
 ###############################################################################
 do_help ()
 {
 	SELF=`basename $0`
-	echo "Usage:"
-	echo "	./$SELF -p interface"
-	echo "	./$SELF -s interface ssid"
-	echo "		 -p        - print ap table"
-	echo "		 -s        - get security type, such as NONE, WEP, WPAPSK"
-	echo "		 interface - network interface, such as wlan1, ra0"
-	echo "		 ssid      - ap's identification."
-	echo "Example:"
-	echo "	./$SELF -p wlan1"
-	echo "	./$SELF -s wlan1 dlink"
+	echo "Usage:" 
+	echo "	./$SELF -p interface" 
+	echo "	./$SELF -s interface ssid" 
+	echo "		 -p        - print ap table" 
+	echo "		 -s        - get security type, such as NONE, WEP, WPAPSK" 
+	echo "		 interface - network interface, such as wlan1, ra0" 
+	echo "		 ssid      - ap's identification." 
+	echo "Example:" 
+	echo "	./$SELF -p wlan1" 
+	echo "	./$SELF -s wlan1 dlink" 
 	exit 0
 }
 
-echo "----->main"
+echo "---->main"
 
 if [ $# != 2 -a $# != 3 ]; then
 	do_help
@@ -498,6 +513,8 @@ if [ $# = 2 ]; then
 		disconnect $2
 	elif [ "$1" = "-r" ];then
 		reconnect $2
+	elif [ "$1" = "-close" ];then
+		close $2
 	else
 		do_help
 	fi

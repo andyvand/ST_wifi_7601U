@@ -56,7 +56,7 @@ int main ( int argc, char *argv[] )
     memset(&link_info, 0, sizeof(struct sta_link_info));
     
 
-    err = ST_GetAPinf2File(&total_ap, "wlan1");/*housir: ÐŽÈëAP info ---> /dev/wifi/listap */
+    err = ST_GetAPinf2File(&total_ap, "wlan1");/*housir: 写入AP info ---> /dev/wifi/listap */
 
     printf("[total_ap][%d]\n", total_ap);
     scan_ap_info = (struct wifi_info *)malloc(total_ap * 
@@ -69,7 +69,7 @@ int main ( int argc, char *argv[] )
     {
 	fprintf(stderr, "ST_GetAPinf2File() = %d\n", err);
     }
-	err = ST_Get_Ap_Raw_FromFile(&scan_ap_info, &total_ap, "wlan1");/*housir: scan_ap_info<---¶ÁÈëAP info <--- /dev/wifi/listap */
+	err = ST_Get_Ap_Raw_FromFile(&scan_ap_info, &total_ap, "wlan1");/*housir: scan_ap_info<---读取AP info <--- /dev/wifi/listap */
     if (-1 == err) 
     {
 	fprintf(stderr, "ST_Get_Ap_Raw_FromFile() = %d\n", err);

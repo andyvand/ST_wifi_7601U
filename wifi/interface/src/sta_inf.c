@@ -103,7 +103,7 @@ int apply_for_ips(unsigned char getip_way, unsigned char getdns_way, IN struct w
         pid_t pid_set_gateway = 0;
         if ( (pid_set_gateway = vfork()) == 0)
         {
-#if 0
+#if 1
             if ( (err = execlp ("route", "route", "add", "default", "gw", ips_info->gateway, NULL)) < 0)
                 FPRINTF_CA(stderr, "execlp() error=%d\n", err);
 #endif
